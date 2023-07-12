@@ -1,58 +1,79 @@
 <?php
-session_start();
-function forum_controller_index($request) {
-    require_once(MODEL_DIR.'/forum.php');
-    $data = forum_model_myList($request);
-    render(VIEW_DIR.'/forum/myArticles.php', $data);
-}
 
+/**
+ * renders create forum view, requires login
+ */
 function forum_controller_create() {
     require(SECURE_DIR);
     render(VIEW_DIR.'/forum/create.php');
 }
 
+/**
+ * requires login and prevents bad data in url, deletes article...
+ */
+function forum_controller_delete($request) {
+    require(SECURE_DIR);
+    require_once(MODEL_DIR.'/forum.php');
+    if (!forum_model_myShow($request)) header("Location: ?msg=10");
+    else {
+        forum_model_delete($request);
+        header("Location: ?module=user");
+    }
+}
+
+/**
+ * ...bis...renders data from db request into edit view
+ */
 function forum_controller_edit($request) {
-    if(isset($request['id'])){
-        require_once(MODEL_DIR.'/forum.php');
-        $data = forum_model_readArticle($request);
+    require(SECURE_DIR);
+    require_once(MODEL_DIR.'/forum.php');
+    if (!forum_model_myShow($request)) header("Location: ?msg=10");
+    else {
+        $data = forum_model_myShow($request);
         render(VIEW_DIR.'/forum/edit.php', $data);
-    } else {
-        header("Location: ?msg=10");
     }
-
 }
 
-function forum_controller_update($request) {
-    require(SECURE_DIR);
+/**
+ * ...bis...into read view
+ */
+function forum_controller_show($request) {
     require_once(MODEL_DIR.'/forum.php');
-    $isValid = validateArticle($request);
-    if($isValid){
-        forum_model_update($request);
-        header("Location: ?module=forum&action=index");
+    if (!forum_model_show($request)) header("Location: ?msg=10");
+    else{ 
+        $data = forum_model_show($request);
+        render(VIEW_DIR.'/forum/read.php', $data);
     }
-    else header("Location: ?module=forum&action=edit&msg=1");
 }
 
 
-function forum_controller_delete() {
-    require(SECURE_DIR);
-    require_once(MODEL_DIR.'/forum.php');
-    forum_model_delete();
-    header("Location: ?module=forum&action=index");
-}
-
-
+/**
+ * ...bis... and calls validation
+ */
 function forum_controller_store($request) {
     require(SECURE_DIR);
     require_once(MODEL_DIR.'/forum.php');
-
-    $isValid = validateArticle($request);
-    if($isValid){
+    if(!validateArticle($request)) header("Location: ?module=forum&action=create&msg=1");
+    else {
         forum_model_store($request);
-        header("Location: ?module=forum&action=index");
+        header("Location: ?module=user");
     }
-    else header("Location: ?module=forum&action=create&msg=1");
 }
 
+/**
+ * ..bis...calls validation and redirects to 'this'  edit article if false
+ */
+function forum_controller_update($request) {
+    $articleId = $request['id'];
+    require_once(MODEL_DIR.'/forum.php');
+    if (!forum_model_myShow($request)) header("Location: ?msg=10");
+    else {
+        if(!validateArticle($request)) header("Location: ?module=forum&action=edit&id=$articleId&msg=1");
+        else {
+            forum_model_update($request);
+            header("Location: ?module=user");
+        } 
+    }
+}
 
 ?>

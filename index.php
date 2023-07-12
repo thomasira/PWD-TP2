@@ -2,7 +2,7 @@
 require_once('config/config.php');
 require_once('lib/core.php'); 
 require_once(CONNEX_DIR);
-
+session_start();
 
 $module = isset($_REQUEST['module']) ? safe($_REQUEST['module']) : $config['default_module'];
 $action = isset($_REQUEST['action']) ? safe($_REQUEST['action']) : $config['default_action'];

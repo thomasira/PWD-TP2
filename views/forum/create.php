@@ -3,19 +3,22 @@
 $msg = NULL;
 if(isset($_GET['msg'])){
     if($_GET['msg'] == 1){
-        $msg = 'make sure you have title(5 to 100 char) and an article(max 1000 char)';
+        $msg = 'make sure you have a title(5 to 100 char) and an article(max 1000 char)';
     }
 }
 ?>
+<div class="error"><strong><?=$msg?></strong></div>
 <form action="?module=forum&action=store" method="post">
-    <div class="error"><p><?=$msg?></p></div>
+    
     <h2>New article</h2>
     <label>Title:  
-        <input type="text" name="title">
+        <input class="title" type="text" name="title" minlength="5" maxlength="20">
     </label>
-    <label>Article: 
-        <textarea type="text" name="article"  rows="4" cols="50"></textarea>
+    <label class="text-box">Article: 
+        <textarea type="text" name="article" maxlength="1000"></textarea>
     </label>
+    <input type="hidden" value='<?= date("Y-m-d") ?>' name="date">
     <input type="submit" value="create" class="button">
-    <input type="text" value='<?= date("Y-m-d") ?>' name="date" class="invisible">
+    <a href="?module=user" class="button">back</a>
 </form>
+

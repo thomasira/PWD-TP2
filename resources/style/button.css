@@ -1,0 +1,17 @@
+.button{
+    font-family: monospace, sans-serif;
+    font-size: var(--fontSml);
+    text-decoration: none;
+    background-color: var(--colorVar);
+    border: 1px solid var(--colorDark);
+    box-shadow: 1px 1px var(--colorDark);
+    padding: var(--gapSmler);
+}
+.button:hover{
+    color: var(--colorSecond);
+    background-color: var(--colorThird);
+    cursor: pointer;
+}
+.button.variant{
+    background-color: var(--colorSecond);
+}

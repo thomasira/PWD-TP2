@@ -1,6 +1,7 @@
 <?php
     $name = NULL;
     $msg = NULL;
+    $success = NULL;
     if(isset($_SESSION['fingerPrint'])) $name = $_SESSION['name'];
     if(isset($_GET['msg'])){
         if($_GET['msg'] == 1){
@@ -21,13 +22,19 @@
 
 <section>
     <h2>All articles</h2>
-    <div class="article-grid">
+    <div class="flow-article">
 
-    <?php foreach($data as $row){?>
+    <?php
+    foreach($data as $row) {
+        $preview = substr($row['article'],0, 120).'...';
+        ?>
         <article class="article">
-            <h3><a href="#"><?= $row['title']?></a></h3>
-            <p><?= $row['article']?></p>
-            <cite>@<?= $row['name']?></cite><small><?= $row['date']?></small>
+            <h3><a href="?module=forum&action=show&id=<?= $row['id']?>"><?= $row['title']?></a></h3>
+            <p><cite><?= $preview?></cite></p>
+            <div>
+                <small><?= $row['name']?></small>
+                <small><?= $row['date']?></small>
+            </div>
         </article>
     <?php } ?> 
     

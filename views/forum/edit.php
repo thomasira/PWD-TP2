@@ -1,30 +1,28 @@
 <?php
-require(SECURE_DIR);
 $msg = NULL;
 if(isset($_GET['msg'])){
     if($_GET['msg'] == 1){
-        $msg = 'make sure you have title(2 to 25 char) and an article(max 1000 char)';
+        $msg = 'make sure you have a title(5 to 100 char) and an article(max 1000 char)';
     }
 }
-$title = $article = '';
 if (isset($data)) {
     foreach($data as $key => $value){
         $$key = $value;
     }
 }
-
 ?>
+<div class="error"><strong><?=$msg?></strong></div>
 <form action="?module=forum&action=update" method="post">
-    <div class="error"><p><?=$msg?></p></div>
     <h2>Edit</h2>
     <label>Title:  
-        <input type="text" name="title" value="<?= $title?>">
+        <input class="title" type="text" name="title" value="<?= $title?>">
     </label>
-    <label>Article: 
+    <label class="text-box">Article: 
         <textarea type="text" name="article"  rows="4" cols="50"><?= $article?></textarea>
     </label>
-    <input type="text" value="<?= $id?>" name="id" class="invisible">
-    <input type="text" value="<?= date("Y-m-d")?>" name="date" class="invisible">
+    <input type="hidden" value="<?= $user_id?>" name="userId">
+    <input type="hidden" value="<?= $id?>" name="id">
+    <input type="hidden" value="<?= date("Y-m-d")?>" name="date">
     <input type="submit" value="edit" class="button">
+    <a href="?module=user" class="button">back</a>
 </form>
-
