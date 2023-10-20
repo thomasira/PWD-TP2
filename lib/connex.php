@@ -8,7 +8,7 @@ $port = 3306;
 
 /* $host = "localhost";
 $username = "e2395387";
-$password = "EXQirVZxt1N1Jp45h92p";
+$password = "**********";
 $dbName = "e2395387";
 $port = 3306;
  */
